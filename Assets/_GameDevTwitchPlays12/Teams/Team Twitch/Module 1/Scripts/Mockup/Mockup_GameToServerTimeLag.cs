@@ -92,7 +92,7 @@ public class Mockup_GameToServerTimeLag : MonoBehaviour {
     private void SendWhisperToUser(string userToWhisper, string theWhisper)
     {
 
-        Message whisper = new Message(userToWhisper, theWhisper, Message.GetCurrentTimeUTC(), Platform.Game);
+        Message whisper = new Message(userToWhisper, theWhisper, Message.GetCurrentTimeUTC(), Platform.Game,CommandIRC.PRIVMSG);
         ChatAPI.SendMessageToUser(userToWhisper, Platform.Twitch, whisper);
 
     }

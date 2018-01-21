@@ -25,7 +25,7 @@ namespace DidzNeil.ChatAPI
             while (true)
             {
                 DateTime now = Message.CreateFromTimestamp();
-                Message msg = new Message("Game Admin", "Server time: " + now.ToString("hh:mm:ss"), Message.GetCurrentTimeUTC(), Platform.Game);
+                Message msg = new Message("Game Admin", "Server time: " + now.ToString("hh:mm:ss"), Message.GetCurrentTimeUTC(), Platform.Game,CommandIRC.PRIVMSG);
 
                 ChatAPI.SendMessageToEveryUsers(msg);
 

@@ -24,7 +24,6 @@ public class FakeInput : IInput
 public class GameManager12 : MonoBehaviour
 {
     #region Public Members
-
     public IGameEngine m_gameEngine;
 
     public IInput m_input = new FakeInput();
@@ -140,7 +139,7 @@ public class GameManager12 : MonoBehaviour
         {
             m_input.SendFeedback(command);
 
-            Message msg = new Message("Game Admin", command.response, Message.GetCurrentTimeUTC(), Platform.Game);
+            Message msg = new Message("Game Admin", command.response, Message.GetCurrentTimeUTC(), Platform.Game,CommandIRC.PRIVMSG);
 
             //ChatAPI.SendMessageToEveryUsers(msg);
             ChatAPI.SendMessageToUser(message.GetUserName(), message.GetPlatform(), msg);
@@ -149,9 +148,12 @@ public class GameManager12 : MonoBehaviour
         {
             if (command.response == "!START")
             {
-                
-                //List<Player> playerList = new List<Player>(m_commandManager.userDataBase.Keys);
-               // m_gameEngine.AssignFactionToPlayers(playerList);
+                Player player = new Player
+                {
+                    name = message.GetUserName()
+                };
+                AddPlayer(player);
+                m_gameEngine.AssignFactionToPlayers(playerList);
             }
 
             string userId = (int)message.GetPlatform() + " " + message.GetUserName();
@@ -160,7 +162,26 @@ public class GameManager12 : MonoBehaviour
             m_gameEngine.GetCommandFromPlayer(userId, formattedCommand);
         }
     }
-
+    private void AddPlayer(Player player) {
+        foreach (Player p in playerList){
+            if (p.name == player.name)
+            {
+                return;
+            }
+        }
+        playerList.Add(player);
+    }
+    private void RemovePlayer(Player player)
+    {
+        foreach (Player p in playerList)
+        {
+            if (p.name == player.name)
+            {
+                return;
+            }
+        }
+        playerList.Remove(player);
+    }
     private void Update()
     {
 

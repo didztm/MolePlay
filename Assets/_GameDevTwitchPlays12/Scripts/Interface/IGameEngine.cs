@@ -2,6 +2,6 @@
 
 public interface IGameEngine
 {
-    void AssignFactionToPlayers(List<string> ListOfPlayerNames);
+    void AssignFactionToPlayers(List<Player> ListOfPlayerNames);
     void GetCommandFromPlayer(string PName, string Command);
 }

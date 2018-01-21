@@ -244,12 +244,13 @@ public class PlayerAction : MonoBehaviour, IGameEngine
 
     }
 
-    public void AssignFactionToPlayers(List<string> ListOfPlayerNames)
+  
+    public void GetCommandFromPlayer(string PName, string Command)
     {
         throw new System.NotImplementedException();
     }
 
-    public void GetCommandFromPlayer(string PName, string Command)
+    public void AssignFactionToPlayers(List<Player> ListOfPlayerNames)
     {
         throw new System.NotImplementedException();
     }

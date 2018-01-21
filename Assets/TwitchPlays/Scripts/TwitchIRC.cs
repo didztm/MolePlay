@@ -17,7 +17,7 @@ public class TwitchIRC : MonoBehaviour
     //event(buffer).
     public class MsgEvent : UnityEngine.Events.UnityEvent<string> { }
     public MsgEvent messageRecievedEvent = new MsgEvent();
-
+    public MsgEvent serverMessageRecievedEvent = new MsgEvent();
     private string buffer = string.Empty;
     private bool stopThreads = false;
     private Queue<string> commandQueue = new Queue<string>();
@@ -89,6 +89,10 @@ public class TwitchIRC : MonoBehaviour
                     recievedMsgs.Add(buffer);
                 }
             }
+            else
+            {
+                serverMessageRecievedEvent.Invoke(buffer);
+            }
 
             //Send pong reply to any ping messages
             if (buffer.StartsWith("PING "))
@@ -105,6 +109,7 @@ public class TwitchIRC : MonoBehaviour
                    Connected();
                 hasBeenConnected = true;
             }
+            
         }
     }
     private void IRCOutputProcedure(System.IO.TextWriter output)

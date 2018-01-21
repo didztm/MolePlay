@@ -45,7 +45,7 @@ public class Mockup_SequenceMessages : MonoBehaviour
 
         Message msg = new Message(
             toSend._userName, toSend._message
-            , GetTimestamp(DateTime.Now), Platform.Mockup
+            , GetTimestamp(DateTime.Now), Platform.Mockup,CommandIRC.PRIVMSG
             );
         ChatAPI.NotifyNewMessageToListeners(msg);
     }

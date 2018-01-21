@@ -31,8 +31,8 @@ public class SendToTwitchIRC : MonoBehaviour {
 
         yield return new WaitForSeconds(5);
 
-        ChatAPI.SendMessageToUser("drnd93", Platform.Twitch, new Message("GameMaster", "Bonjour toi", Message.GetCurrentTimeUTC(), Platform.Game));
-        ChatAPI.SendMessageToEveryUsers(new Message("GameMaster", "T:"+ Message.GetCurrentTimeUTC(), Message.GetCurrentTimeUTC(),Platform.Game));
+        ChatAPI.SendMessageToUser("drnd93", Platform.Twitch, new Message("GameMaster", "Bonjour toi", Message.GetCurrentTimeUTC(), Platform.Game,CommandIRC.PRIVMSG));
+        ChatAPI.SendMessageToEveryUsers(new Message("GameMaster", "T:"+ Message.GetCurrentTimeUTC(), Message.GetCurrentTimeUTC(),Platform.Game,CommandIRC.PRIVMSG));
         }
 
     }

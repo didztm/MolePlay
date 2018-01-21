@@ -27,7 +27,7 @@ namespace DidzNeil.ChatAPI {
         {
             Message msg = new Message(
                 m_usernames[UnityEngine.Random.Range(0, m_usernames.Count)], m_randomMessages[UnityEngine.Random.Range(0, m_randomMessages.Count)]
-                , GetTimestamp(DateTime.Now), Platform.Mockup
+                , GetTimestamp(DateTime.Now), Platform.Mockup,CommandIRC.PRIVMSG
                 );
             ChatAPI.NotifyNewMessageToListeners(msg);
         }

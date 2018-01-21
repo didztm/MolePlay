@@ -8,65 +8,55 @@ public class ListenToTwitchIRC : MonoBehaviour {
 
 
     public TwitchIRC m_ircManager;
-    
 
-	// Use this for initialization
+
+    // Use this for initialization
 	void Start () {
 
         m_ircManager.messageRecievedEvent.AddListener(MessageReceived);
+        m_ircManager.serverMessageRecievedEvent.AddListener(ServerMessageReceived);
 	}
-    //TODO manque le channel reçu du message (comment on l'implémente?)
-    private void MessageReceived(string message)
+
+    private void ServerMessageReceived(string str)
     {
-       /* Match match = Regex.Match(message, "(?<=\\#).*");
-        string myInfo= match.Success ? match.Groups[0].Value : "";
-        Match matchUser = Regex.Match(myInfo, ".*(?=\\s\\:)");
-        Match matchMsg= Regex.Match(myInfo, "(?<=\\:).*");
-        string pseudo = matchUser.Success ? matchUser.Groups[0].Value:"";
-        string msg= matchMsg.Success ? matchMsg.Groups[0].Value:"";*/
-
-
-         int indexOfMessageStart = message.IndexOf("PRIVMSG #");
-         //NOT RESPECTING TWITCH STANDARD
-         if (indexOfMessageStart < 0) return;
+        Debug.Log(str + "<----------------server");
+        string command = str.Split(' ')[1];
 
         string pseudo = "";
-        int pseudoStart = message.IndexOf('!')+1;
-        int pseudoEnd = message.IndexOf('@');
-        pseudo = message.Substring(pseudoStart, pseudoEnd - pseudoStart);
+        string msg = "";
+       // Message message = FormatStringToMessage(str);
+       // ChatAPI.NotifyNewMessageToListeners(message);
 
-        Debug.LogWarning("0");
-
-        string userMessageRaw = message.Substring(indexOfMessageStart + 9);
-         string[] tokens = userMessageRaw.Split(':');
-        //NOT MESSSAGE DETECTED
-         if (tokens.Length < 2) return;
-
-         
-         string channel = tokens[0];
-
-        if (string.IsNullOrEmpty(pseudo))
-            return;
-        string msg = userMessageRaw.Substring(channel.Length+1);
-        if (string.IsNullOrEmpty(msg))
-            return;
-
-
-        Debug.LogWarning("1");
-
-        GenerateAndSendMessage(pseudo, msg);
     }
 
-
-    // Update is called once per frame
-    void GenerateAndSendMessage (string pseudo, string message) {
-
-        Message msg = new Message(pseudo,message, GetTime(), Platform.Twitch);
-        ChatAPI.NotifyNewMessageToListeners(msg);
-		
-	}
+    private void MessageReceived(string str)
+    {
+        Debug.Log(str + "<----------------");
+        string command = str.Split(' ')[1];
+        string pseudo = "";
+        string msg = "";
+        int indexOfstrStart = str.IndexOf("PRIVMSG #");
+        //NOT RESPECTING TWITCH STANDARD
+        if (indexOfstrStart < 0) return ;
+        int pseudoStart = str.IndexOf('!') + 1;
+        int pseudoEnd = str.IndexOf('@');
+        pseudo = str.Substring(pseudoStart, pseudoEnd - pseudoStart);
+        string userstrRaw = str.Substring(indexOfstrStart + 9);
+        string[] tokens = userstrRaw.Split(':');
+        //NOT MESSSAGE DETECTED
+        if (tokens.Length < 2) return ;
+        string channel = tokens[0];
+        if (string.IsNullOrEmpty(pseudo))
+            return;
+        msg = userstrRaw.Substring(channel.Length + 1);
+        if (string.IsNullOrEmpty(msg))
+            return ;
+        Message message = new Message(pseudo, msg, GetTime(), Platform.Twitch, command);
+        ChatAPI.NotifyNewMessageToListeners(message);
+    }
     private long GetTime()
     {
         return Message.GetCurrentTimeUTC();
     }
+
 }

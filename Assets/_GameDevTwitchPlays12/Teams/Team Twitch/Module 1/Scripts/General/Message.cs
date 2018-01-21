@@ -29,14 +29,25 @@ namespace DidzNeil.ChatAPI
         [SerializeField]
         private Platform m_platform;
 
-        public Message(string userName, string message, long timestamp, Platform platform)
+        [SerializeField]
+        private string m_command;
+
+        public Message(string userName, string message, long timestamp, Platform platform,CommandIRC command)
         {
             m_userName = userName;
             m_message = message;
             m_timestamp = timestamp;
             m_platform = platform;
+            m_command = command.ToString();
         }
-
+        public Message(string userName, string message, long timestamp, Platform platform, string command)
+        {
+            m_userName = userName;
+            m_message = message;
+            m_timestamp = timestamp;
+            m_platform = platform;
+            m_command = command;
+        }
         public DateTime GetDate()
         {
             return CreateFromTimestamp(m_timestamp);
@@ -53,7 +64,11 @@ namespace DidzNeil.ChatAPI
         {
             return m_platform;
         }
-
+        public string GetCommand()
+        {
+            return m_command;
+        }
+       
         public long GetTimestamp()
         {
             return m_timestamp;
@@ -98,5 +113,56 @@ namespace DidzNeil.ChatAPI
         Facebook = 2,
         Discord=3
 
+    }
+    public enum CommandIRC : int
+    {
+        ADMIN = 1,
+        AWAY = 2,
+        CONNECT = 3,
+        DIE = 4,
+        ERROR = 5,
+        INFO = 6,
+        INVITE = 7,
+        ISON = 8,
+        JOIN = 9,
+        KICK = 10,
+        KILL = 11,
+        LINKS = 12,
+        LIST = 13,
+        LUSERS = 14,
+        MODE = 15,
+        MOTD = 16,
+        NAMES = 17,
+        NICK = 18,
+        NJOIN = 19,
+        NOTICE = 20,
+        OPER = 21,
+        PART = 22,
+        PASS = 23,
+        PING = 24,
+        PONG = 25,
+        PRIVMSG = 26,
+        QUIT = 27,
+        REHASH = 28,
+        RESTART = 29,
+        SERVER = 30,
+        SERVICE = 31,
+        SERVLIST = 32,
+        SQUERY = 33,
+        SQUIRT = 34,
+        SQUIT = 35,
+        STATS = 36,
+        SUMMON = 37,
+        TIME = 38,
+        TOPIC = 39,
+        TRACE = 40,
+        USER = 41,
+        USERHOST = 42,
+        USERS = 43,
+        VERSION = 44,
+        WALLOPS = 45,
+        WHO = 46,
+        WHOIS = 47,
+        WHOWAS = 48
     }
 }

@@ -60,7 +60,7 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
     public void DispatchTeam(Faction faction1, Faction faction2, Faction faction3,Faction faction4,int playerLimit) {
       
     }
-    public void AssignFactionToPlayers(List<string> ListOfPlayerNames)         //JEROME HERE ! Give me a list of player names, or ID in string format, thx buddy ;-)
+    public void AssignFactionToPlayers(List<Player> ListOfPlayerNames)         //JEROME HERE ! Give me a list of player names, or ID in string format, thx buddy ;-)
     {/*
         if (m_isInitialized)
         {
