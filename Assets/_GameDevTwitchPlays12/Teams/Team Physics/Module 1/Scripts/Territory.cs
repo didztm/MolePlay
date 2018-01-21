@@ -1,18 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class Territory  : MonoBehaviour
 {
 
     #region Public Members
-
-
     #endregion
 
 
     #region Public Void
-    private bool m_hasSpecial;
+    #endregion
+    #region Propertie (GET,SET)
+    [SerializeField]
+    private string m_territoryID;
+    public string TerritoryID
+    {
+        get { return m_territoryID; }
+        set { m_territoryID = value; }
+    }
+    [Header("Used GameObject")]
+    [SerializeField]
     private GameObject m_territoryGameObject;
 
     public GameObject TerritoryGameObject
@@ -20,7 +27,7 @@ public class Territory  : MonoBehaviour
         get { return m_territoryGameObject; }
         set { m_territoryGameObject = value; }
     }
-
+    [SerializeField]
     private Transform m_territoryTransform;
 
     public Transform TerritoryTransform
@@ -28,7 +35,7 @@ public class Territory  : MonoBehaviour
         get { return m_territoryTransform; }
         set { m_territoryTransform = value; }
     }
-
+    [SerializeField]
     private MeshRenderer m_territoryMeshRenderer;
 
     public MeshRenderer TerritoryMeshRenderer
@@ -36,33 +43,39 @@ public class Territory  : MonoBehaviour
         get { return m_territoryMeshRenderer; }
         set { m_territoryMeshRenderer = value; }
     }
-
-
-    public bool HasSpecial
+    [Header("Item territory properties")]
+    [SerializeField]
+    private bool m_hasItem;
+    public bool HasItem
     {
-        get { return m_hasSpecial; }
-        set { m_hasSpecial = value; }
+        get { return m_hasItem; }
+        set { m_hasItem = value; }
     }
-    private Special m_territorySpecial;
-
-    public Special TerritorySpecial
+    
+    private Item m_territoryItem;
+    public Item TerritoryItem
     {
-        get { return m_territorySpecial; }
-        set { m_territorySpecial = value; }
+        get { return m_territoryItem; }
+        set { m_territoryItem = value; }
     }
+    [Header("Headquarter")]
+    [SerializeField]
     private bool m_isHQ;
     public bool IsHQ
     {
         get { return m_isHQ; }
         set { m_isHQ = value; }
     }
-
+    [Header("Central Zone")]
+    [SerializeField]
     private bool m_isCenter;
     public bool IsCenter
     {
         get { return m_isCenter; }
         set { m_isCenter = value; }
     }
+    [Header("Territory Color")]
+    [SerializeField]
     private Color m_currentColor = Color.white;
     public Color CurrentColor
     {

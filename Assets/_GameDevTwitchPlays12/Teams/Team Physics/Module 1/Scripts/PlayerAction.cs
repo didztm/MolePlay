@@ -154,10 +154,10 @@ public class PlayerAction : MonoBehaviour, IGameEngine
     }
 
     public void Move(string TypeOfMove,Player player)
-    {
+    {/*
         float y;
         float x;
-        /*
+        
         switch (TypeOfMove)
         {
             case "UP":

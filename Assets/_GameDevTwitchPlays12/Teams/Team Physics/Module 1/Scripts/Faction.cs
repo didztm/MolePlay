@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class Faction : MonoBehaviour
 {
-    private List<Player> m_listPlayerChar;
-    public List<Player> ListPlayerChar
+    private List<Player> m_listPlayer;
+    public List<Player> ListPlayer
     {
-        get { return m_listPlayerChar; }
-        set { m_listPlayerChar = value; }
+        get { return m_listPlayer; }
+        set { m_listPlayer = value; }
     }
 
     public void AddPlayer(Player player)
     {
-        m_listPlayerChar.Add(player);
+        m_listPlayer.Add(player);
     }
     /*
      * TODO
@@ -55,7 +55,7 @@ public class Faction : MonoBehaviour
     }
     private void Awake()
     {
-        m_listPlayerChar = new List<Player>();
+        m_listPlayer = new List<Player>();
     }
 
     void Update ()
@@ -65,14 +65,14 @@ public class Faction : MonoBehaviour
 
     public void DispatchMoney()
     {
-        if(m_listPlayerChar.Count != 0)
+        if(m_listPlayer.Count != 0)
         {
-            int part = m_goldReserves / m_listPlayerChar.Count;
-            foreach(Player player in m_listPlayerChar)
+            int part = m_goldReserves / m_listPlayer.Count;
+            foreach(Player player in m_listPlayer)
             {
                 player.Gold += part;
             }
-            m_goldReserves = m_goldReserves % m_listPlayerChar.Count;
+            m_goldReserves = m_goldReserves % m_listPlayer.Count;
         }        
     }
    

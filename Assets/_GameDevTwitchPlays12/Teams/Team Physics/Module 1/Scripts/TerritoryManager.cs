@@ -6,9 +6,10 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
 {
 
     #region Public Members
+    public bool m_debug = true;
     public List<Player> m_listPlayer = new List<Player>();
     public List<PlayerInfo> m_listPlayerInfo = new List<PlayerInfo>();
-    public int m_sizeOfDiceSpecial = 5;
+    public int m_sizeOfDiceItem = 5;
     public int m_incomePerTerritory = 1;
     public float m_timeBetweenPayDay = 1;
     public int m_nbrXTerritories =33;
@@ -16,8 +17,11 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
     public GameObject m_territoryPrefab;
     public GameObject m_playerCharPrefab;
     public int m_nbrFactions;
-
+    public int m_territoryInCentralZone=0;
+    public int m_headQuarter=0;
     public Territory[,] m_battleField;
+    private List<Territory> eligibleTerritoryItem=new List<Territory>();
+    
     #endregion
 
 
@@ -51,76 +55,109 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
 
     void Awake()
     {
-        GameStart();
+        //GameStart();
     }
-    /*
-        public void AssignFactionToPlayers(List<string> ListOfPlayerNames)         //JEROME HERE ! Give me a list of player names, or ID in string format, thx buddy ;-)
+    public void DispatchTeam(Faction faction1, Faction faction2, Faction faction3,Faction faction4,int playerLimit) {
+      
+    }
+    public void AssignFactionToPlayers(List<string> ListOfPlayerNames)         //JEROME HERE ! Give me a list of player names, or ID in string format, thx buddy ;-)
+    {/*
+        if (m_isInitialized)
         {
-            if (m_isInitialized)
+            return;
+        }
+        m_isInitialized = true;
+        int countRed;
+        int countBlue;
+        int countYellow;
+        int countGreen;
+
+        for (int i = 0; i < ListOfPlayerNames.Count; i++)
+        {
+            countBlue = m_factionBlue.ListPlayer.Count;
+            countRed = m_factionGreen.ListPlayer.Count;
+            countYellow = m_factionYellow.ListPlayer.Count;
+            countGreen = m_factionRed.ListPlayer.Count;
+            int playerLimit = countBlue+ countGreen + countRed + countYellow / 4;
+            if (countBlue >= playerLimit || playerLimit != 0)
             {
-                return;
+                m_factionBlue.AddPlayer(ListOfPlayerNames[i]);
             }
-            m_isInitialized = true;
-
-            int PlayerNum = 0;
-            for(int faction = 0; PlayerNum< ListOfPlayerNames.Count; PlayerNum++)
+            else if (countRed >= playerLimit)
             {
-                GameObject NewPlayerGameObject = Instantiate(m_playerCharPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform);
-                NewPlayerGameObject.name = ListOfPlayerNames[PlayerNum];
-                NewPlayerGameObject.GetComponentInChildren<TextMesh>().text = "" + PlayerNum;
-                Player NewPlayerScript = NewPlayerGameObject.GetComponent<Player>();
-               // NewPlayerScript.MyManager = this;
-                NewPlayerScript.NumPlayer = PlayerNum;
-                NewPlayerScript.name = ListOfPlayerNames[PlayerNum];
-                if (faction == 0)
-
-                {
-                    NewPlayerScript.PlayerFaction = FactionRED;
-                    FactionRED.AddPlayer(NewPlayerScript);
-                    NewPlayerGameObject.transform.position = FactionRED.RespawnPosition;
-                    NewPlayerScript.CurrentTerritory = m_AxeY[0][0].gameObject;
-                }
-                else if (faction == 1)
-                {
-                    NewPlayerScript.PlayerFaction = FactionBLUE;
-                    FactionBLUE.AddPlayer(NewPlayerScript);
-                    NewPlayerGameObject.transform.position = FactionBLUE.RespawnPosition;
-                    NewPlayerScript.CurrentTerritory = m_AxeY[m_nbrXTerritories - 1][m_nbrYTerritories - 1].gameObject;
-                }
-                else if (faction == 2)
-                {
-                    NewPlayerScript.PlayerFaction = FactionGREEN;
-                    FactionGREEN.AddPlayer(NewPlayerScript);
-                    NewPlayerGameObject.transform.position = FactionGREEN.RespawnPosition;
-                    NewPlayerScript.CurrentTerritory = m_AxeY[m_nbrXTerritories - 1][0].gameObject;
-                }
-                else if (faction == 3)
-                {
-                    NewPlayerScript.PlayerFaction = FactionYELLOW;
-                    FactionYELLOW.AddPlayer(NewPlayerScript);
-                    NewPlayerGameObject.transform.position = FactionYELLOW.RespawnPosition;
-                    NewPlayerScript.CurrentTerritory = m_AxeY[0][m_nbrYTerritories - 1].gameObject;
-                }
-                faction++;
-                if (ListOfPlayerNames.Count > 8 )
-                {
-                    if(faction > 3)
-                    {
-                        faction = 0;
-                    }
-                }
-                else if(faction > 1)
-                {
-                    faction = 0;
-                }
-               // NewPlayerScript.MyManager = this;
-                m_listPlayer.Add(NewPlayerScript);
+                m_factionRed
+            }
+            else if (countYellow >= playerLimit)
+            {
+                m_factionYellow
+            }
+            else if (countGreen >= playerLimit)
+            {
+                m_factionGreen
             }
 
         }
+        
+        int PlayerNum = 0;
+        for(int faction = 0; PlayerNum< ListOfPlayerNames.Count; PlayerNum++)
+        {
+            GameObject NewPlayerGameObject = Instantiate(m_playerCharPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform);
+            NewPlayerGameObject.name = ListOfPlayerNames[PlayerNum];
+            NewPlayerGameObject.GetComponentInChildren<TextMesh>().text = "" + PlayerNum;
+            Player NewPlayerScript = NewPlayerGameObject.GetComponent<Player>();
+           // NewPlayerScript.MyManager = this;
+            NewPlayerScript.NumPlayer = PlayerNum;
+            NewPlayerScript.name = ListOfPlayerNames[PlayerNum];
+            if (faction == 0)
+
+            {
+                NewPlayerScript.PlayerFaction = FactionRED;
+                FactionRED.AddPlayer(NewPlayerScript);
+                NewPlayerGameObject.transform.position = FactionRED.RespawnPosition;
+                NewPlayerScript.CurrentTerritory = m_AxeY[0][0].gameObject;
+            }
+            else if (faction == 1)
+            {
+                NewPlayerScript.PlayerFaction = FactionBLUE;
+                FactionBLUE.AddPlayer(NewPlayerScript);
+                NewPlayerGameObject.transform.position = FactionBLUE.RespawnPosition;
+                NewPlayerScript.CurrentTerritory = m_AxeY[m_nbrXTerritories - 1][m_nbrYTerritories - 1].gameObject;
+            }
+            else if (faction == 2)
+            {
+                NewPlayerScript.PlayerFaction = FactionGREEN;
+                FactionGREEN.AddPlayer(NewPlayerScript);
+                NewPlayerGameObject.transform.position = FactionGREEN.RespawnPosition;
+                NewPlayerScript.CurrentTerritory = m_AxeY[m_nbrXTerritories - 1][0].gameObject;
+            }
+            else if (faction == 3)
+            {
+                NewPlayerScript.PlayerFaction = FactionYELLOW;
+                FactionYELLOW.AddPlayer(NewPlayerScript);
+                NewPlayerGameObject.transform.position = FactionYELLOW.RespawnPosition;
+                NewPlayerScript.CurrentTerritory = m_AxeY[0][m_nbrYTerritories - 1].gameObject;
+            }
+            faction++;
+            if (ListOfPlayerNames.Count > 8 )
+            {
+                if(faction > 3)
+                {
+                    faction = 0;
+                }
+            }
+            else if(faction > 1)
+            {
+                faction = 0;
+            }
+           // NewPlayerScript.MyManager = this;
+            m_listPlayer.Add(NewPlayerScript);
+        }*/
+
+    }
 
 
-        IEnumerator TimerPayDay()
+
+    IEnumerator TimerPayDay()
         {
             m_timerFinished = false;
             yield return new WaitForSeconds(m_timeBetweenPayDay);
@@ -184,7 +221,7 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
                 if(PlayerChar.Name==PName)
                 {
 
-                    PlayerChar.Move(Command);
+                    //PlayerChar.Move(Command);
                 }
             }
         }
@@ -202,12 +239,12 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
             //testing only !!
             if (Input.GetButtonDown("Fire1"))
             {
-                m_listPlayer[0].GetComponent<PlayerCharacter>().Move("UP");
+              //  m_listPlayer[0].GetComponent<PlayerAction>().Move("UP");
 
             }
             if (Input.GetButtonDown("Fire2"))
             {
-                m_listPlayer[0].GetComponent<PlayerCharacter>().Move("RIGHT");
+              //  m_listPlayer[0].GetComponent<PlayerAction>().Move("RIGHT");
             }
             //--------------
 
@@ -227,7 +264,7 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
         }
 
         #endregion
-        */
+        
     #region Private Void
     public void GameStart()
     {
@@ -248,7 +285,8 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
         PlaceCenterZone();
         //CreateFactions();
         PlaceFactionHQ();
-       // PlaceSpecials();
+        InitializeTerritorryItems();
+       // PlaceItems();
     }
 
     private void CreateBattleField() {
@@ -264,9 +302,11 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
                 positionOfCell = new Vector3(x * 1f, y * 1f, 0);
                 GameObject territoryPrefab = Instantiate(m_territoryPrefab, positionOfCell, Quaternion.identity, transform);
                 territoryPrefab.name = "y=" + positionOfCell.y + "x=" + positionOfCell.x;
-                 territoryPrefab.GetComponent<Territory>().Manager = this;
+                territoryPrefab.GetComponent<Territory>().Manager = this;
                 m_battleField[x,y] = territoryPrefab.GetComponent<Territory>();
-                
+                m_battleField[x, y].TerritoryID = "x"+x+"y"+y;
+               // Debug.Log(m_battleField[x, y].TerritoryID);
+
             }
 
         }
@@ -274,15 +314,16 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
     }
     private void PlaceCenterZone()
     {
-        int xTrueCenter = (((m_battleField.GetLength(0) + 2) - 1) / 2);
-        int yTrueCenter = (((m_battleField.GetLength(1) + 2) - 1) / 2);
+        int xTrueCenter = (((m_battleField.GetLength(0)) - 1) / 2);
+        int yTrueCenter = (((m_battleField.GetLength(1)) - 1) / 2);
         for (int y = yTrueCenter-1; y <= yTrueCenter +1; y++)
         {
             for (int x = xTrueCenter - 1; x <= xTrueCenter + 1; x++)
             {
-                Debug.Log(m_battleField[x, y]);
+               // Debug.Log(m_battleField[x, y]);
 
                 m_battleField[x,y].GetComponent<Territory>().IsCenter = true;
+                m_territoryInCentralZone++;
                 m_battleField[x, y].GetComponent<Territory>().ColorChange(Color.red);
             }
         }
@@ -336,93 +377,84 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
         HQTerritory.IsHQ = true;
         HQTerritory.TerritoryMeshRenderer.material.color = faction.FactionColor;
         HQTerritory.CurrentColor = faction.FactionColor;
+        m_headQuarter++;
     }
-    private void PlaceSpecials()
+
+    public void InitializeTerritorryItems()
     {
-        int A = Random.Range(1, 10);//decides which central territory gets the glasses
-        int cptCenter=1;
-        for (int y = 0; y < m_nbrYTerritories; y++)
-        {
-            for (int x = 0; x < m_nbrXTerritories; x++)
+        int randomCenterZone = Random.Range(1, m_territoryInCentralZone+1);//decides which central territory gets the glasses
+
+        int centerCount = 0;
+        int itemCount = Item.ItemTypeLength();
+        bool hasGlasses = false;
+        int i = 1;
+        foreach (Territory t in m_battleField) {
+           
+            if (!hasGlasses)
             {
-                if(!m_AxeY[y][x].GetComponent<Territory>().IsHQ)//no special in HQs
+                if (t.IsCenter && !t.HasItem && centerCount == randomCenterZone)
                 {
-                    if (m_AxeY[y][x].GetComponent<Territory>().IsCenter)//only key in center
-                    {
-                        if (cptCenter==A)
-                        {
-                            m_AxeY[y][x].GetComponent<Territory>().HasSpecial = true;
-                            m_AxeY[y][x].AddComponent<Special>();
-                            m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.GLASSES);
-                        }
-                        cptCenter++;
-                    }
-                    else
-                    {
-                        int B = Random.Range(1, m_sizeOfDiceSpecial+1); //random range takes argument 1 inclusive argument 2 exclusive
-                        if(B==1)//1 chance out of sizeofdice...
-                        {
-                            m_AxeY[y][x].GetComponent<Territory>().HasSpecial = true;
-                            m_AxeY[y][x].AddComponent<Special>();
-                            B= Random.Range(1, 7);//random range takes argument 1 inclusive argument 2 exclusive
-                            switch (B)
-                            {
-                                case 1: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.COINCHEST); break;
-                                case 2: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.PARCHEMENT); break;
-                                case 3: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.GRENADES); break;
-                                case 4: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.PEBBLE); break;
-                                case 5: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.SHOVEL); break;
-                                case 6: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.STRAIN); break;
-                            }
-                        }
-                    }
+                    t.HasItem = true;
+                    Item item= t.TerritoryGameObject.AddComponent<Item>();
+                    item.ItemType= Item.e_itemType.GLASSES;
+                    item.ItemEffectType = Item.e_itemEffectType.INVENTORY;
+                    t.TerritoryItem = item;
+                    t.HasItem = true;
+                    hasGlasses = true;
+                    t.ColorChange(Color.grey);
                 }
+                else if (t.IsCenter)
+                {
+                    centerCount++;
+                }
+                
             }
+            if (!t.IsCenter && !t.HasItem && !t.IsHQ)
+                {
+                    eligibleTerritoryItem.Add(t);
+                    i++;
+                }
+            
         }
+        InitializeItems();
     }
-    public void RePopSpecial()
+    private void InitializeItems()
     {
-        bool FoundRightPlace=false;
+        //Voir comment améliorer le random
         
-        while(!FoundRightPlace)
+        if (m_debug)
         {
-            int x = Random.Range(0, m_nbrXTerritories - 1);
-            int y = Random.Range(0, m_nbrYTerritories - 1);
-            if (!m_AxeY[y][x].GetComponent<Territory>().IsHQ)
+            Debug.Log("Total eligibleTerritory:"+eligibleTerritoryItem.Count);
+        }
+
+        for (int i = 1; i < Item.ItemTypeLength(); i++)
+        {
+            if (Random.Range(1, 4) == Random.Range(1, 4))
             {
-                if (!m_AxeY[y][x].GetComponent<Territory>().IsCenter)
                 {
-                    if (m_AxeY[y][x].GetComponent<Territory>().GetPlayerNumOnTerritory() == 0)
+                    int intRndItem = Random.Range(1, Item.ItemTypeLength());
+                    int intRndTerritory = Random.Range(0, eligibleTerritoryItem.Count);
+                    if (m_debug)
                     {
-                        if (!m_AxeY[y][x].GetComponent<Territory>().HasSpecial)
-                        {
-                            FoundRightPlace = true;
-                            m_AxeY[y][x].AddComponent<Special>();
-                            int B = Random.Range(1, 7);//random range takes argument 1 inclusive argument 2 exclusive
-                            switch (B)
-                            {
-                                case 1: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.COINCHEST); break;
-                                case 2: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.PARCHEMENT); break;
-                                case 3: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.GRENADES); break;
-                                case 4: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.PEBBLE); break;
-                                case 5: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.SHOVEL); break;
-                                case 6: m_AxeY[y][x].GetComponent<Special>().ChooseTypeOfSpecial(Special.e_specialType.STRAIN); break;
-                            }
-                        }
+                        Debug.Log("Rnd eligibleTerritory1------>" + intRndTerritory);
+                        Debug.Log("Rnd item1------>" + intRndItem);
+                        eligibleTerritoryItem[intRndTerritory].ColorChange(Color.magenta);
                     }
+                    Item item = eligibleTerritoryItem[intRndTerritory].TerritoryGameObject.AddComponent<Item>();
+                    item.ItemType = (Item.e_itemType)intRndItem;
+                    eligibleTerritoryItem[intRndTerritory].TerritoryItem = item;
+                    eligibleTerritoryItem.Remove(eligibleTerritoryItem[intRndTerritory]);
+
                 }
             }
+            else i--;
         }
+       
     }
-
-    public void AssignFactionToPlayers(List<string> ListOfPlayerNames)
+    //lié à un evenement
+    public void PopItem()
     {
-        throw new System.NotImplementedException();
-    }
 
-    public void GetCommandFromPlayer(string PName, string Command)
-    {
-        throw new System.NotImplementedException();
     }
     #endregion
 
@@ -439,7 +471,6 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
     private Faction m_factionBlue;
     private Faction m_factionGreen;
     private Faction m_factionYellow;
-
     private bool m_timerFinished=true;
     private bool m_gameHasStarted;
     private bool m_isInitialized;

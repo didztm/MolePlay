@@ -32,6 +32,7 @@ public class GameManager12 : MonoBehaviour
     public ICommandManager m_commandManager;
 
     private Queue<ICommand> m_commandQueue = new Queue<ICommand>();
+    private List<Player> playerList;
 
     #endregion
 
@@ -51,10 +52,10 @@ public class GameManager12 : MonoBehaviour
     [MenuItem("GDL-Twitch12/Stun Neil %t")]
     public static void test()
     {
-        Special spe = new Special();
-        spe.m_player = new Player() { Name = "0 Neil" };
-        spe.m_typeSpecial = Special.e_specialType.PARCHEMENT;
-        SpecialAPI.NotifyNewSpecial(spe);
+        Item item = new Item();
+        item.Player = new Player() { Name = "0 Neil" };
+        item.ItemType = Item.e_itemType.PARCHEMENT;
+        ItemEvent.NotifyNewItem(item);
 
         string ticks = "?";
         try
@@ -74,15 +75,15 @@ public class GameManager12 : MonoBehaviour
     protected void Start()
     {
         ChatAPI.AddListener(HandleMessage);
-        SpecialAPI.AddListener(HandleEvent);
+        ItemEvent.AddListener(HandleEvent);
 
 
         
     }
 
-    private void HandleEvent(ISpecial special)
+    private void HandleEvent(Item item)
     {
-        string[] userInfo = special.m_player.Name.Split(new char[] { ' ' }, 2);
+        string[] userInfo = item.Player.Name.Split(new char[] { ' ' }, 2);
 
 
         DateTime unixStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
@@ -91,23 +92,23 @@ public class GameManager12 : MonoBehaviour
 
         string state = "";
 
-        switch (special.m_typeSpecial)
+        switch (item.ItemType)
         {
-            case Special.e_specialType.PEBBLE:
+            case Item.e_itemType.PEBBLE:
                 break;
-            case Special.e_specialType.COINCHEST:
+            case Item.e_itemType.COINCHEST:
                 break;
-            case Special.e_specialType.GRENADES:
+            case Item.e_itemType.GRENADES:
                 break;
-            case Special.e_specialType.SHOVEL:
+            case Item.e_itemType.SHOVEL:
                 break;
-            case Special.e_specialType.PARCHEMENT:
+            case Item.e_itemType.PARCHEMENT:
                 state = "STUN";
                 break;
-            case Special.e_specialType.STRAIN:
+            case Item.e_itemType.STRAIN:
                 state = "STRAIN";
                 break;
-            case Special.e_specialType.GLASSES:
+            case Item.e_itemType.GLASSES:
                 break;
             default:
                 break;
@@ -123,13 +124,15 @@ public class GameManager12 : MonoBehaviour
 
     private void HandleMessage(Message message)
     {
+        
+    
         ICommand command = m_commandManager.Parse(
             message.GetUserName(),
             (int)message.GetPlatform(),
             message.GetMessage(),
             message.GetTimestamp()
         );
-
+        
         if (command == null)
             return;
 
@@ -146,8 +149,9 @@ public class GameManager12 : MonoBehaviour
         {
             if (command.response == "!START")
             {
-                List<string> playerList = new List<string>(m_commandManager.userDataBase.Keys);
-                m_gameEngine.AssignFactionToPlayers(playerList);
+                
+                //List<Player> playerList = new List<Player>(m_commandManager.userDataBase.Keys);
+               // m_gameEngine.AssignFactionToPlayers(playerList);
             }
 
             string userId = (int)message.GetPlatform() + " " + message.GetUserName();
