@@ -25,7 +25,7 @@ public class PlayCommands : MonoBehaviour
 		Debug.Log(str);
 		//Remove non-command parts of message (like username)
 		int msgIndex = str.IndexOf("PRIVMSG #");
-        str = str.Substring(msgIndex + twitch.nickName.Length + 11);
+        str = str.Substring(msgIndex + twitch.GetNickName().Length + 11);
 		//Allow non delimited commands using the entire string (ie 'A' for A-button instead of 'button: A')
 		string cmd = str;
 		if(delimiter.Length > 0 && str.Split(delimiter.ToCharArray(), System.StringSplitOptions.RemoveEmptyEntries).Length > 1)

@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 
 //Primary code by Grahnz on GitHub: https://github.com/Grahnz/TwitchIRC-Unity
-
 public class TwitchIRC : MonoBehaviour
 {
-	[Tooltip("oAuth Token for Twitch Account")]
-    public string oauth;
-	[Tooltip("Twitch Account Username")]
-    public string nickName;
+
+    private string oauth;
+    private string nickName;
     private string server = "irc.chat.twitch.tv";
     private int port = 6667;
 
@@ -18,6 +16,7 @@ public class TwitchIRC : MonoBehaviour
     public class MsgEvent : UnityEngine.Events.UnityEvent<string> { }
     public MsgEvent messageRecievedEvent = new MsgEvent();
     public MsgEvent serverMessageRecievedEvent = new MsgEvent();
+    public MsgEvent serverMessageSendEvent = new MsgEvent();
     private string buffer = string.Empty;
     private bool stopThreads = false;
     private Queue<string> commandQueue = new Queue<string>();
@@ -37,6 +36,9 @@ public class TwitchIRC : MonoBehaviour
     private System.Net.Sockets.TcpClient sock;
     public bool debugPrintAll;
 
+    public string GetNickName() {
+        return nickName;
+    }
     private void StartIRC()
     {
     	//Connect to Twitch Server
@@ -51,12 +53,10 @@ public class TwitchIRC : MonoBehaviour
         var networkStream = sock.GetStream();
         var input = new System.IO.StreamReader(networkStream);
        	var output = new System.IO.StreamWriter(networkStream);
-
         //Send username and password
        	output.WriteLine("PASS " + oauth);
         output.WriteLine("NICK " + nickName.ToLower());
         output.Flush();
-
         //output proc
        	outProc = new System.Threading.Thread(() => IRCOutputProcedure(output));
         outProc.Start();
@@ -73,13 +73,12 @@ public class TwitchIRC : MonoBehaviour
             if (!networkStream.DataAvailable)
                 continue;
 
-
             //Debug.Log("[DEBUG:TwitchIRC] ?? ???");
-
             buffer = input.ReadLine();
+            //serverMessageRecievedEvent.Invoke(buffer);
             if (debugPrintAll)
             Debug.Log("> " + buffer);
-
+            Debug.Log(buffer);
             //was message?
             if (buffer.Contains("PRIVMSG #"))
             {
@@ -89,11 +88,6 @@ public class TwitchIRC : MonoBehaviour
                     recievedMsgs.Add(buffer);
                 }
             }
-            else
-            {
-                serverMessageRecievedEvent.Invoke(buffer);
-            }
-
             //Send pong reply to any ping messages
             if (buffer.StartsWith("PING "))
             {
@@ -129,6 +123,7 @@ public class TwitchIRC : MonoBehaviour
                         //send msg.
                         output.WriteLine(topeek);
                         output.Flush();
+
                         //remove msg from queue.
                         commandQueue.Dequeue();
                         //restart stopwatch.

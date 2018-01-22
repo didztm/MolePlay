@@ -4,17 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using DidzNeil.ChatAPI;
 using System.Text.RegularExpressions;
+[RequireComponent(typeof(AutoConnectTwitchIRC))]
 public class ListenToTwitchIRC : MonoBehaviour {
 
-
-    public TwitchIRC m_ircManager;
-
-
+    public AutoConnectTwitchIRC m_autoConnectManager;
+    private TwitchIRC irc;
     // Use this for initialization
-	void Start () {
-
-        m_ircManager.messageRecievedEvent.AddListener(MessageReceived);
-        m_ircManager.serverMessageRecievedEvent.AddListener(ServerMessageReceived);
+    private void Awake()
+    {
+        m_autoConnectManager = gameObject.GetComponent<AutoConnectTwitchIRC>();
+        
+    }
+    void Start () {
+        irc = m_autoConnectManager.GetIRC();
+        irc.messageRecievedEvent.AddListener(MessageReceived);
+        irc.serverMessageRecievedEvent.AddListener(ServerMessageReceived);
 	}
 
     private void ServerMessageReceived(string str)
@@ -31,7 +35,7 @@ public class ListenToTwitchIRC : MonoBehaviour {
 
     private void MessageReceived(string str)
     {
-        Debug.Log(str + "<----------------");
+        Debug.Log(str + "<----------------Msg");
         string command = str.Split(' ')[1];
         string pseudo = "";
         string msg = "";
@@ -59,4 +63,5 @@ public class ListenToTwitchIRC : MonoBehaviour {
         return Message.GetCurrentTimeUTC();
     }
 
+    
 }

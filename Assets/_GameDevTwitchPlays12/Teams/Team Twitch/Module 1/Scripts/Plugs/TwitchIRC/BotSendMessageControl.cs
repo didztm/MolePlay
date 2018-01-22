@@ -13,6 +13,7 @@ public class BotSendMessageControl :MonoBehaviour {
         {
             Debug.LogWarning("/!\\ There is not filter to prevent Anti-Spam /!\\", this.gameObject);
             Debug.Break();
+            _antiSpamFilter._twitchIRC = _twitchIRC;
         }
 
        // StartCoroutine(TDD());
