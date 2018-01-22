@@ -75,10 +75,8 @@ public class TwitchIRC : MonoBehaviour
 
             //Debug.Log("[DEBUG:TwitchIRC] ?? ???");
             buffer = input.ReadLine();
-            //serverMessageRecievedEvent.Invoke(buffer);
             if (debugPrintAll)
             Debug.Log("> " + buffer);
-            Debug.Log(buffer);
             //was message?
             if (buffer.Contains("PRIVMSG #"))
             {
@@ -87,6 +85,9 @@ public class TwitchIRC : MonoBehaviour
 
                     recievedMsgs.Add(buffer);
                 }
+            }
+            else {
+                serverMessageRecievedEvent.Invoke(buffer);
             }
             //Send pong reply to any ping messages
             if (buffer.StartsWith("PING "))
@@ -123,7 +124,6 @@ public class TwitchIRC : MonoBehaviour
                         //send msg.
                         output.WriteLine(topeek);
                         output.Flush();
-
                         //remove msg from queue.
                         commandQueue.Dequeue();
                         //restart stopwatch.
@@ -139,6 +139,7 @@ public class TwitchIRC : MonoBehaviour
     {
         lock (commandQueue)
         {
+            serverMessageSendEvent.Invoke(cmd);
             commandQueue.Enqueue(cmd);
         }
     }
@@ -147,6 +148,7 @@ public class TwitchIRC : MonoBehaviour
     {
         lock (commandQueue)
         {
+            
             commandQueue.Enqueue("PRIVMSG #" + nickName.ToLower() + " :" + msg);
         }
     }

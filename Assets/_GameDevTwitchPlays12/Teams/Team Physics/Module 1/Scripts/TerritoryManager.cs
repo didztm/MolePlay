@@ -57,11 +57,9 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
     {
         //GameStart();
     }
-    public void DispatchTeam(Faction faction1, Faction faction2, Faction faction3,Faction faction4,int playerLimit) {
-      
-    }
+   
     public void AssignFactionToPlayers(List<Player> ListOfPlayerNames)         //JEROME HERE ! Give me a list of player names, or ID in string format, thx buddy ;-)
-    {/*
+    {
         if (m_isInitialized)
         {
             return;
@@ -85,73 +83,20 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
             }
             else if (countRed >= playerLimit)
             {
-                m_factionRed
+                m_factionRed.AddPlayer(ListOfPlayerNames[i]);
             }
             else if (countYellow >= playerLimit)
             {
-                m_factionYellow
+                m_factionYellow.AddPlayer(ListOfPlayerNames[i]);
             }
             else if (countGreen >= playerLimit)
             {
-                m_factionGreen
+                m_factionGreen.AddPlayer(ListOfPlayerNames[i]);
             }
 
         }
         
-        int PlayerNum = 0;
-        for(int faction = 0; PlayerNum< ListOfPlayerNames.Count; PlayerNum++)
-        {
-            GameObject NewPlayerGameObject = Instantiate(m_playerCharPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform);
-            NewPlayerGameObject.name = ListOfPlayerNames[PlayerNum];
-            NewPlayerGameObject.GetComponentInChildren<TextMesh>().text = "" + PlayerNum;
-            Player NewPlayerScript = NewPlayerGameObject.GetComponent<Player>();
-           // NewPlayerScript.MyManager = this;
-            NewPlayerScript.NumPlayer = PlayerNum;
-            NewPlayerScript.name = ListOfPlayerNames[PlayerNum];
-            if (faction == 0)
-
-            {
-                NewPlayerScript.PlayerFaction = FactionRED;
-                FactionRED.AddPlayer(NewPlayerScript);
-                NewPlayerGameObject.transform.position = FactionRED.RespawnPosition;
-                NewPlayerScript.CurrentTerritory = m_AxeY[0][0].gameObject;
-            }
-            else if (faction == 1)
-            {
-                NewPlayerScript.PlayerFaction = FactionBLUE;
-                FactionBLUE.AddPlayer(NewPlayerScript);
-                NewPlayerGameObject.transform.position = FactionBLUE.RespawnPosition;
-                NewPlayerScript.CurrentTerritory = m_AxeY[m_nbrXTerritories - 1][m_nbrYTerritories - 1].gameObject;
-            }
-            else if (faction == 2)
-            {
-                NewPlayerScript.PlayerFaction = FactionGREEN;
-                FactionGREEN.AddPlayer(NewPlayerScript);
-                NewPlayerGameObject.transform.position = FactionGREEN.RespawnPosition;
-                NewPlayerScript.CurrentTerritory = m_AxeY[m_nbrXTerritories - 1][0].gameObject;
-            }
-            else if (faction == 3)
-            {
-                NewPlayerScript.PlayerFaction = FactionYELLOW;
-                FactionYELLOW.AddPlayer(NewPlayerScript);
-                NewPlayerGameObject.transform.position = FactionYELLOW.RespawnPosition;
-                NewPlayerScript.CurrentTerritory = m_AxeY[0][m_nbrYTerritories - 1].gameObject;
-            }
-            faction++;
-            if (ListOfPlayerNames.Count > 8 )
-            {
-                if(faction > 3)
-                {
-                    faction = 0;
-                }
-            }
-            else if(faction > 1)
-            {
-                faction = 0;
-            }
-           // NewPlayerScript.MyManager = this;
-            m_listPlayer.Add(NewPlayerScript);
-        }*/
+        
 
     }
 

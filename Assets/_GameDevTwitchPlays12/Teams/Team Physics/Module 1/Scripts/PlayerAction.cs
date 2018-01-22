@@ -25,7 +25,7 @@ public class PlayerAction : MonoBehaviour, IGameEngine
     #region  class methods
     public void DoBattle(Player player,Player Enemy)
     {
-      /*  GetComponent<AudioSource>().PlayOneShot(brawlSound);
+        GetComponent<AudioSource>().PlayOneShot(brawlSound);
 
 
         Vector3 PlayerRespawnPosition = new Vector3();
@@ -33,6 +33,7 @@ public class PlayerAction : MonoBehaviour, IGameEngine
         int temp= player.Level;
         player.Level -= Enemy.Level;
         Enemy.Level -= temp;
+   
         if(player.Level<1)
         {
             player.Level = 1;
@@ -57,7 +58,7 @@ public class PlayerAction : MonoBehaviour, IGameEngine
                 player.hasGlasses = true;
                 Enemy.hasGlasses = false;
             }
-        }*/
+        }
     }
 
     public void TestForNearbyEnnemies(Player player)

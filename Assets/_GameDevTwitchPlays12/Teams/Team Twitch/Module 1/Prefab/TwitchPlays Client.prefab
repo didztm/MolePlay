@@ -19,8 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4348905036768760}
-  - component: {fileID: 114918415657625466}
   - component: {fileID: 212939716677306042}
+  - component: {fileID: 114998289027574352}
   - component: {fileID: 114690263132640672}
   - component: {fileID: 114944162254301976}
   - component: {fileID: 114483793253536444}
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fdedd262060bd4abee88e873677e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _twitchIRC: {fileID: 114918415657625466}
+  _twitchIRC: {fileID: 0}
   _timeBetweenMessage: 2
   _coolDown: 0
 --- !u!114 &114483793253536444
@@ -101,8 +101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5ba4ba3ecae8eb4ab7d82af3504b565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
+  debug: 1
   botMessage: {fileID: 114518249088662704}
+  m_autoConnectManager: {fileID: 114690263132640672}
 --- !u!114 &114518249088662704
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -114,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7a0ba3d5f9ecf84ebf99d3f2e0b985f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _twitchIRC: {fileID: 114918415657625466}
+  _twitchIRC: {fileID: 0}
   _antiSpamFilter: {fileID: 114374748261928036}
 --- !u!114 &114554002995282312
 MonoBehaviour:
@@ -141,32 +142,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd4cdcd45db79446b031f710f99d4c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _userName: JamsCenter
-  _oAuth: oauth:cbk042ncixqogechf1xn57nnrvtwsg
---- !u!114 &114918415657625466
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1441879328337012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d46be4e317cd49739107d65e9b8b324, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  oauth: 
-  nickName: 
-  _onModeratorConnectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  _onModeratorDisconnectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  debugPrintAll: 1
+  _userName: didztm
+  _oAuth: oauth:3wj9y1jvyl74ob45r5cmsj5yotd57s
 --- !u!114 &114944162254301976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -178,7 +155,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529769ac400a53d4f8832d8ec09484bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ircManager: {fileID: 114918415657625466}
+  m_autoConnectManager: {fileID: 114690263132640672}
+--- !u!114 &114998289027574352
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1441879328337012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d46be4e317cd49739107d65e9b8b324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onModeratorConnectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _onModeratorDisconnectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  debugPrintAll: 0
 --- !u!212 &212939716677306042
 SpriteRenderer:
   m_ObjectHideFlags: 1

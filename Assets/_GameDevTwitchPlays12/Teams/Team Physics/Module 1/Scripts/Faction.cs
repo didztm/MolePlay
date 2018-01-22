@@ -47,7 +47,14 @@ public class Faction : MonoBehaviour
         get { return m_respawnPosition; }
         set { m_respawnPosition = value; }
     }
-
+    public Player GetPlayer(Player player)
+    {
+        if (m_listPlayer.Contains(player))
+        {
+            return player;
+        }
+        return player;
+    }
 
     void StartCountDown()
     {
