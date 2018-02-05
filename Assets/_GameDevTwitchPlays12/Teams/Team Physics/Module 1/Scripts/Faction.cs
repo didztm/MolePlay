@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class Faction : MonoBehaviour
 {
+    public static Faction RED { get; set; }
+    public static Faction BLUE { get; set; } 
+    public static Faction GREEN { get; set; }
+    public static Faction YELLOW { get; set; }
+
+
+
+
+    public float m_timeBetweenPayDay = 1;
+    private bool m_timerFinished = true;
+    public int m_incomePerTerritory = 1;
     private List<Player> m_listPlayer;
     public List<Player> ListPlayer
     {
@@ -42,10 +53,16 @@ public class Faction : MonoBehaviour
         get { return m_goldReserves; }
         set { m_goldReserves = value; }
     }
-    public Vector3 RespawnPosition
+    public Territory RespawnPosition { get; set; }
+
+
+    IEnumerator TimerPayDay()
     {
-        get { return m_respawnPosition; }
-        set { m_respawnPosition = value; }
+        m_timerFinished = false;
+        yield return new WaitForSeconds(m_timeBetweenPayDay);
+        GoldReserves += NbrTerritories * m_incomePerTerritory;
+        m_timerFinished = true;
+        DispatchMoney();
     }
 
 
@@ -60,7 +77,8 @@ public class Faction : MonoBehaviour
 
     void Update ()
     {
-        
+        if(m_timerFinished)
+            StartCoroutine(TimerPayDay());
     }
 
     public void DispatchMoney()

@@ -119,7 +119,7 @@ public class Territory  : MonoBehaviour
     {
         Player p = col.GetComponent<Player>();
         m_listPlayerCharOnTerritory.Add(p);
-        if ((m_currentColor != p.PlayerFaction.FactionColor)&&(!IsHQ))
+        if ((m_currentColor != p.Faction.FactionColor)&&(!IsHQ))
         {
             ColorChange(p);
         }
@@ -136,42 +136,42 @@ public class Territory  : MonoBehaviour
         {
             if (m_currentColor == Color.red)
             {
-                m_manager.FactionRED.NbrTerritories--;
+                Faction.RED.NbrTerritories--;
             }
             else if (m_currentColor == Color.blue)
             {
-                m_manager.FactionBLUE.NbrTerritories--;
+                Faction.BLUE.NbrTerritories--;
             }
             else if (m_currentColor == Color.green)
             {
-                m_manager.FactionGREEN.NbrTerritories--;
+                Faction.GREEN.NbrTerritories--;
             }
             else if (m_currentColor == Color.yellow)
             {
-                m_manager.FactionYELLOW.NbrTerritories--;
+                Faction.YELLOW.NbrTerritories--;
             }
         }
-        m_currentColor = p.PlayerFaction.FactionColor;
+        m_currentColor = p.Faction.FactionColor;
         Color col = gameObject.GetComponentInChildren<MeshRenderer>().material.color;
-        col = p.PlayerFaction.FactionColor;
+        col = p.Faction.FactionColor;
         col.a = 100f;
         gameObject.GetComponentInChildren<MeshRenderer>().material.color = col;
         //new territory owner gains Nbrterritory
         if (m_currentColor == Color.red)
         {
-            m_manager.FactionRED.NbrTerritories++;
+            Faction.RED.NbrTerritories++;
         }
         else if (m_currentColor == Color.blue)
         {
-            m_manager.FactionBLUE.NbrTerritories++;
+            Faction.BLUE.NbrTerritories++;
         }
         else if (m_currentColor == Color.green)
         {
-            m_manager.FactionGREEN.NbrTerritories++;
+            Faction.GREEN.NbrTerritories++;
         }
         else if (m_currentColor == Color.yellow)
         {
-            m_manager.FactionYELLOW.NbrTerritories++;
+            Faction.YELLOW.NbrTerritories++;
         }
     }
 

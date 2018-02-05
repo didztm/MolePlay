@@ -11,6 +11,7 @@ public class PlayerAction : MonoBehaviour, IGameEngine
     public int m_goldPerCoinChest = 50;
     public int m_priceOfLevel = 50;
     private bool m_hasJustLostBattle;
+    public TerritoryManager m_territoryManager;
     
     #region properties
     
@@ -23,51 +24,45 @@ public class PlayerAction : MonoBehaviour, IGameEngine
     #endregion
     
     #region  class methods
-    public void DoBattle(Player player,Player Enemy)
+    public void DoBattle(Player player,Player enemy)
     {
-      /*  GetComponent<AudioSource>().PlayOneShot(brawlSound);
-
-
-        Vector3 PlayerRespawnPosition = new Vector3();
-        Vector3 EnemyRespawnPosition = new Vector3();
+        GetComponent<AudioSource>().PlayOneShot(brawlSound);
         int temp= player.Level;
-        player.Level -= Enemy.Level;
-        Enemy.Level -= temp;
+        player.Level -= enemy.Level;
+        enemy.Level -= temp;
         if(player.Level<1)
         {
             player.Level = 1;
-            PlayerRespawnPosition = player.PlayerFaction.RespawnPosition;
-            transform.position = PlayerRespawnPosition;
-            player.CurrentTerritory = GameObject.Find("y=" + PlayerRespawnPosition.y + "x=" + PlayerRespawnPosition.x);
+            transform.position = player.Faction.RespawnPosition.TerritoryTransform.position;
+            player.CurrentTerritory.TerritoryGameObject = GameObject.Find("y=" + player.Faction.RespawnPosition.y + "x=" + player.Faction.RespawnPosition.x);
             m_hasJustLostBattle = true;
-            if(player.hasGlasses)
+            if(player.HasGlasses)
             {
-                player.hasGlasses = false;
-                Enemy.hasGlasses = true;
+                player.HasGlasses = false;
+                enemy.HasGlasses = true;
             }
         }
-        if (Enemy.Level < 1)
+        if (enemy.Level < 1)
         {
-            Enemy.Level = 1;
-            EnemyRespawnPosition = Enemy.PlayerFaction.RespawnPosition;
-            Enemy.transform.position = EnemyRespawnPosition;
-            Enemy.CurrentTerritory = GameObject.Find("y=" + EnemyRespawnPosition.y + "x=" + EnemyRespawnPosition.x);
-            if (Enemy.hasGlasses)
+            enemy.Level = 1;
+            enemy.transform.position = enemy.Faction.RespawnPosition.TerritoryTransform.position;
+            enemy.CurrentTerritory.TerritoryGameObject = GameObject.Find("y=" + enemy.Faction.RespawnPosition.y + "x=" + enemy.Faction.RespawnPosition.x);
+            if (enemy.HasGlasses)
             {
-                player.hasGlasses = true;
-                Enemy.hasGlasses = false;
+                player.HasGlasses = true;
+                enemy.HasGlasses = false;
             }
-        }*/
+        }
     }
 
     public void TestForNearbyEnnemies(Player player)
     {
-        /*
+        
         float y;
         float x;
         Territory TerritoryToTest;
         y = player.CurrentTerritory.transform.position.y + 1;
-        if (!(y > m_manager.m_nbrYTerritories - 1))
+        if (!(y > m_territoryManager.m_nbrYTerritories - 1))
         {
             float tempx = player.CurrentTerritory.gameObject.transform.position.x;
             float tempy = player.CurrentTerritory.gameObject.transform.position.y + 1;
@@ -79,9 +74,9 @@ public class PlayerAction : MonoBehaviour, IGameEngine
 
                     if(!m_hasJustLostBattle)
                     {
-                        if(player.PlayerFaction.FactionColor!=OtherMole.PlayerFaction.FactionColor)
+                        if(player.Faction.FactionColor!=OtherMole.Faction.FactionColor)
                         {
-                            DoBattle(OtherMole);
+                            DoBattle(player,OtherMole);
                         }
                     }
                 }
@@ -99,9 +94,9 @@ public class PlayerAction : MonoBehaviour, IGameEngine
                 {
                     if (!m_hasJustLostBattle)
                     {
-                        if (player.PlayerFaction.FactionColor != OtherMole.PlayerFaction.FactionColor)
+                        if (player.Faction.FactionColor != OtherMole.Faction.FactionColor)
                         {
-                            DoBattle(OtherMole);
+                            DoBattle(player, OtherMole);
                         }
                     }
                         
@@ -120,9 +115,9 @@ public class PlayerAction : MonoBehaviour, IGameEngine
                 {
                     if (!m_hasJustLostBattle)
                     {
-                        if (player.PlayerFaction.FactionColor != OtherMole.PlayerFaction.FactionColor)
+                        if (player.Faction.FactionColor != OtherMole.Faction.FactionColor)
                         {
-                            DoBattle(OtherMole);
+                            DoBattle(player,OtherMole);
                         }
                     }
                         
@@ -130,7 +125,7 @@ public class PlayerAction : MonoBehaviour, IGameEngine
             }
         }
         x = player.CurrentTerritory.transform.position.x + 1;
-        if (!(x > m_manager.m_nbrXTerritories - 1))
+        if (!(x > m_territoryManager.m_nbrXTerritories - 1))
         {
             float tempx = player.CurrentTerritory.gameObject.transform.position.x + 1;
             float tempy = player.CurrentTerritory.gameObject.transform.position.y;
@@ -141,20 +136,20 @@ public class PlayerAction : MonoBehaviour, IGameEngine
                 {
                     if (!m_hasJustLostBattle)
                     {
-                        if (player.PlayerFaction.FactionColor != OtherMole.PlayerFaction.FactionColor)
+                        if (player.Faction.FactionColor != OtherMole.Faction.FactionColor)
                         {
-                            DoBattle(OtherMole);
+                            DoBattle(player,OtherMole);
                         }
                     }
                         
                 }
             }
         }
-        m_hasJustLostBattle = false;*/
+        m_hasJustLostBattle = false;
     }
 
-    public void Move(string TypeOfMove,Player player)
-    {/*
+    public void DoAction(string TypeOfMove,Player player)
+    {
         float y;
         float x;
         
@@ -162,13 +157,13 @@ public class PlayerAction : MonoBehaviour, IGameEngine
         {
             case "UP":
                 y = player.CurrentTerritory.transform.position.y + 1;
-                if (!(y > m_manager.m_nbrYTerritories - 1))
+                if (!(y > m_territoryManager.m_nbrYTerritories - 1))
                 {
                     this.gameObject.transform.Translate(0f, 1f, 0f);
                     float tempx = player.CurrentTerritory.gameObject.transform.position.x;
                     float tempy = player.CurrentTerritory.gameObject.transform.position.y + 1;
-                    player.CurrentTerritory = GameObject.Find("y=" + (int)tempy + "x=" + (int)tempx);
-                    TestForNearbyEnnemies();
+                    player.CurrentTerritory.TerritoryGameObject = GameObject.Find("y=" + (int)tempy + "x=" + (int)tempx);
+                    TestForNearbyEnnemies(player);
                 }
                 break;
             case "DOWN":
@@ -178,8 +173,8 @@ public class PlayerAction : MonoBehaviour, IGameEngine
                     this.gameObject.transform.Translate(0f, -1f, 0f);
                     float tempx = player.CurrentTerritory.gameObject.transform.position.x;
                     float tempy = player.CurrentTerritory.gameObject.transform.position.y - 1;
-                    player.CurrentTerritory = GameObject.Find("y=" + (int)tempy + "x=" + (int)tempx);
-                    TestForNearbyEnnemies();
+                    player.CurrentTerritory.TerritoryGameObject = GameObject.Find("y=" + (int)tempy + "x=" + (int)tempx);
+                    TestForNearbyEnnemies(player);
                 }
                 break;
             case "LEFT":
@@ -189,43 +184,43 @@ public class PlayerAction : MonoBehaviour, IGameEngine
                     this.gameObject.transform.Translate(-1f, 0f, 0f);
                     float tempx = player.CurrentTerritory.gameObject.transform.position.x - 1;
                     float tempy = player.CurrentTerritory.gameObject.transform.position.y;
-                    player.CurrentTerritory = GameObject.Find("y=" + (int)tempy + "x=" + (int)tempx);
-                    TestForNearbyEnnemies();
+                    player.CurrentTerritory.TerritoryGameObject = GameObject.Find("y=" + (int)tempy + "x=" + (int)tempx);
+                    TestForNearbyEnnemies(player);
                 }
                 break;
             case "RIGHT":
                 x = player.CurrentTerritory.transform.position.x + 1;
-                if (!(x > m_manager.m_nbrXTerritories - 1))
+                if (!(x > m_territoryManager.m_nbrXTerritories - 1))
                 {
                     this.gameObject.transform.Translate(1f, 0f, 0f);
                     float tempx = player.CurrentTerritory.gameObject.transform.position.x + 1;
                     float tempy = player.CurrentTerritory.gameObject.transform.position.y;
-                    player.CurrentTerritory = GameObject.Find("y=" + (int)tempy + "x=" + (int)tempx);
-                    TestForNearbyEnnemies();
+                    player.CurrentTerritory.TerritoryGameObject = GameObject.Find("y=" + (int)tempy + "x=" + (int)tempx);
+                    TestForNearbyEnnemies(player);
                 }
                 break;
             case "DIG":
                 
 
-                if (player.CurrentTerritory.GetComponent<Territory>().HasSpecial)
+                if (player.CurrentTerritory.HasItem)
                 {
-                    Special special = player.CurrentTerritory.HasSpecial();
-                    special.m_PlayerAction = this;
-                    SpecialAPI.NotifyNewSpecial(special);
-                    if(special.m_typeSpecial==Special.e_specialType.COINCHEST)
-                    { m_goldmoney += m_goldPerCoinChest; }
-                    if (special.m_typeSpecial == Special.e_specialType.GLASSES)
-                    { hasGlasses=true; }
+                    Item item = player.CurrentTerritory.TerritoryItem;
+                    //item.m_PlayerAction = this;
+                   // SpecialAPI.NotifyNewSpecial(special);
+                    if(item.ItemType==Item.e_itemType.COINCHEST)
+                    { player.Gold += m_goldPerCoinChest; }
+                    if (item.ItemType == Item.e_itemType.GLASSES)
+                    { player.HasGlasses=true; }
 
-                    if (special.m_typeSpecial == Special.e_specialType.PARCHEMENT)
+                    if (item.ItemType == Item.e_itemType.PARCHEMENT)
                         GetComponent<AudioSource>().PlayOneShot(paperSound);
                     else
                         GetComponent<AudioSource>().PlayOneShot(diggingSound);
 
 
-                    CurrentTerritory.GetComponent<Territory>().HasSpecial = false;
-                    Destroy(CurrentTerritory.GetComponent("Special"));
-                    m_manager.RePopSpecial();
+                    player.CurrentTerritory.HasItem = false;
+                    Destroy(player.CurrentTerritory.TerritoryGameObject.GetComponent("Item"));
+                    m_territoryManager.RePopSpecial();
                 }
                 else
                 {
@@ -233,14 +228,14 @@ public class PlayerAction : MonoBehaviour, IGameEngine
                 }
                 break;
             case "!Level":
-                if(m_goldmoney>m_priceOfLevel)
+                if(player.Gold>m_priceOfLevel)
                 {
-                    m_goldmoney -= m_priceOfLevel;
-                    m_Level++;
+                    player.Gold -= m_priceOfLevel;
+                    player.Gold++;
                 }
                 break;
            
-        }*/
+        }
 
     }
 

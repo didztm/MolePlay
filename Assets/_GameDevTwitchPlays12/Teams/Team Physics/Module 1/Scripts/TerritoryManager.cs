@@ -2,21 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TerritoryManager  : MonoBehaviour, IGameEngine
+public class TerritoryManager  : MonoBehaviour
 {
 
     #region Public Members
     public bool m_debug = true;
-    public List<Player> m_listPlayer = new List<Player>();
-    public List<PlayerInfo> m_listPlayerInfo = new List<PlayerInfo>();
+
     public int m_sizeOfDiceItem = 5;
-    public int m_incomePerTerritory = 1;
-    public float m_timeBetweenPayDay = 1;
     public int m_nbrXTerritories =33;
     public int m_nbrYTerritories =33;
     public GameObject m_territoryPrefab;
-    public GameObject m_playerCharPrefab;
-    public int m_nbrFactions;
+
     public int m_territoryInCentralZone=0;
     public int m_headQuarter=0;
     public Territory[,] m_battleField;
@@ -29,26 +25,7 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
     
 
 
-    public Faction FactionRED
-    {
-        get { return m_factionRed; }
-        set { m_factionRed = value; }
-    }
-    public Faction FactionBLUE
-    {
-        get { return m_factionBlue; }
-        set { m_factionBlue = value; }
-    }
-    public Faction FactionGREEN
-    {
-        get { return m_factionGreen; }
-        set { m_factionGreen = value; }
-    }
-    public Faction FactionYELLOW
-    {
-        get { return m_factionYellow; }
-        set { m_factionYellow = value; }
-    }
+   
 
     #endregion
 
@@ -56,123 +33,17 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
     void Awake()
     {
         //GameStart();
-    }
-    public void DispatchTeam(Faction faction1, Faction faction2, Faction faction3,Faction faction4,int playerLimit) {
-      
-    }
-    public void AssignFactionToPlayers(List<Player> ListOfPlayerNames)         //JEROME HERE ! Give me a list of player names, or ID in string format, thx buddy ;-)
-    {/*
-        if (m_isInitialized)
-        {
-            return;
-        }
-        m_isInitialized = true;
-        int countRed;
-        int countBlue;
-        int countYellow;
-        int countGreen;
 
-        for (int i = 0; i < ListOfPlayerNames.Count; i++)
-        {
-            countBlue = m_factionBlue.ListPlayer.Count;
-            countRed = m_factionGreen.ListPlayer.Count;
-            countYellow = m_factionYellow.ListPlayer.Count;
-            countGreen = m_factionRed.ListPlayer.Count;
-            int playerLimit = countBlue+ countGreen + countRed + countYellow / 4;
-            if (countBlue >= playerLimit || playerLimit != 0)
-            {
-                m_factionBlue.AddPlayer(ListOfPlayerNames[i]);
-            }
-            else if (countRed >= playerLimit)
-            {
-                m_factionRed
-            }
-            else if (countYellow >= playerLimit)
-            {
-                m_factionYellow
-            }
-            else if (countGreen >= playerLimit)
-            {
-                m_factionGreen
-            }
-
-        }
-        
-        int PlayerNum = 0;
-        for(int faction = 0; PlayerNum< ListOfPlayerNames.Count; PlayerNum++)
-        {
-            GameObject NewPlayerGameObject = Instantiate(m_playerCharPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform);
-            NewPlayerGameObject.name = ListOfPlayerNames[PlayerNum];
-            NewPlayerGameObject.GetComponentInChildren<TextMesh>().text = "" + PlayerNum;
-            Player NewPlayerScript = NewPlayerGameObject.GetComponent<Player>();
-           // NewPlayerScript.MyManager = this;
-            NewPlayerScript.NumPlayer = PlayerNum;
-            NewPlayerScript.name = ListOfPlayerNames[PlayerNum];
-            if (faction == 0)
-
-            {
-                NewPlayerScript.PlayerFaction = FactionRED;
-                FactionRED.AddPlayer(NewPlayerScript);
-                NewPlayerGameObject.transform.position = FactionRED.RespawnPosition;
-                NewPlayerScript.CurrentTerritory = m_AxeY[0][0].gameObject;
-            }
-            else if (faction == 1)
-            {
-                NewPlayerScript.PlayerFaction = FactionBLUE;
-                FactionBLUE.AddPlayer(NewPlayerScript);
-                NewPlayerGameObject.transform.position = FactionBLUE.RespawnPosition;
-                NewPlayerScript.CurrentTerritory = m_AxeY[m_nbrXTerritories - 1][m_nbrYTerritories - 1].gameObject;
-            }
-            else if (faction == 2)
-            {
-                NewPlayerScript.PlayerFaction = FactionGREEN;
-                FactionGREEN.AddPlayer(NewPlayerScript);
-                NewPlayerGameObject.transform.position = FactionGREEN.RespawnPosition;
-                NewPlayerScript.CurrentTerritory = m_AxeY[m_nbrXTerritories - 1][0].gameObject;
-            }
-            else if (faction == 3)
-            {
-                NewPlayerScript.PlayerFaction = FactionYELLOW;
-                FactionYELLOW.AddPlayer(NewPlayerScript);
-                NewPlayerGameObject.transform.position = FactionYELLOW.RespawnPosition;
-                NewPlayerScript.CurrentTerritory = m_AxeY[0][m_nbrYTerritories - 1].gameObject;
-            }
-            faction++;
-            if (ListOfPlayerNames.Count > 8 )
-            {
-                if(faction > 3)
-                {
-                    faction = 0;
-                }
-            }
-            else if(faction > 1)
-            {
-                faction = 0;
-            }
-           // NewPlayerScript.MyManager = this;
-            m_listPlayer.Add(NewPlayerScript);
-        }*/
-
+        Faction.RED = new Faction();
+        Faction.BLUE= new Faction();
+        Faction.GREEN= new Faction();
+        Faction.YELLOW= new Faction();
     }
 
 
 
-    IEnumerator TimerPayDay()
-        {
-            m_timerFinished = false;
-            yield return new WaitForSeconds(m_timeBetweenPayDay);
-            FactionRED.GoldReserves += FactionRED.NbrTerritories * m_incomePerTerritory;
-            FactionBLUE.GoldReserves += FactionBLUE.NbrTerritories * m_incomePerTerritory;
-            FactionGREEN.GoldReserves += FactionGREEN.NbrTerritories * m_incomePerTerritory;
-            FactionYELLOW.GoldReserves += FactionYELLOW.NbrTerritories * m_incomePerTerritory;
-            m_timerFinished = true;
-            FactionRED.DispatchMoney();
-            FactionBLUE.DispatchMoney();
-            FactionGREEN.DispatchMoney();
-            FactionYELLOW.DispatchMoney();
-
-
-        }
+   
+    /*
         public void FillPlayerInfoList()
         {
             m_listPlayerInfo.Clear();
@@ -212,19 +83,8 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
             }
 
         }
-       
+       */
 
-        public void GetCommandFromPlayer(string PName, string Command)              //JEROME HERE ! Give me a player names and the command he sends ;-)       
-        {
-            foreach(Player PlayerChar in m_listPlayer)
-            {
-                if(PlayerChar.Name==PName)
-                {
-
-                    //PlayerChar.Move(Command);
-                }
-            }
-        }
 
         #region System
         void Start () 
@@ -248,19 +108,11 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
             }
             //--------------
 
-
-            if (m_gameHasStarted)
-            {
-                if (m_timerFinished)
-                {
-                    StartCoroutine("TimerPayDay");
-                }
-            }
-
+/*
             foreach (PlayerInfo _playerInfo in m_listPlayerInfo)
             {
                 //_placementPlayer(_playerInfo.faction, _playerInfo.posOnScreen, _playerInfo.num, _playerInfo.name, _playerInfo.level, _playerInfo.gold);
-            }
+            }*/
         }
 
         #endregion
@@ -335,7 +187,7 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
         Faction faction=territory.TerritoryTransform.GetComponent<Faction>();
         color.a = 100f;
         faction.FactionColor = color;
-        faction.RespawnPosition = territory.TerritoryTransform.position;
+        faction.RespawnPosition = territory;
 
         return faction;
         //FactionBLUE = CreateAFaction(Color.blue, new Vector3(m_nbrYTerritories - 1, m_nbrXTerritories - 1, 0f));
@@ -345,31 +197,31 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
     private void PlaceFactionHQ()
     {
         //LeftBottom
-        FactionRED = AddFaction(m_battleField[0, 0],Color.red);
-        MakeHq(m_battleField[0, 0], FactionRED);
-        MakeHq(m_battleField[0, 1], FactionRED);
-        MakeHq(m_battleField[1, 0], FactionRED);
-        MakeHq(m_battleField[1, 1], FactionRED);
+        Faction.RED = AddFaction(m_battleField[0, 0],Color.red);
+        MakeHq(m_battleField[0, 0], Faction.RED);
+        MakeHq(m_battleField[0, 1], Faction.RED);
+        MakeHq(m_battleField[1, 0], Faction.RED);
+        MakeHq(m_battleField[1, 1], Faction.RED);
         //RightBottom
-        FactionBLUE = AddFaction(m_battleField[0, m_battleField.GetLength(1)-1], Color.blue);
-        MakeHq(m_battleField[0, m_battleField.GetLength(1)-1], FactionBLUE);
-        MakeHq(m_battleField[1, m_battleField.GetLength(1) - 1], FactionBLUE);
-        MakeHq(m_battleField[1, m_battleField.GetLength(1) - 2], FactionBLUE);
-        MakeHq(m_battleField[0, m_battleField.GetLength(1) - 2], FactionBLUE);
+        Faction.BLUE= AddFaction(m_battleField[0, m_battleField.GetLength(1)-1], Color.blue);
+        MakeHq(m_battleField[0, m_battleField.GetLength(1)-1], Faction.BLUE);
+        MakeHq(m_battleField[1, m_battleField.GetLength(1) - 1], Faction.BLUE);
+        MakeHq(m_battleField[1, m_battleField.GetLength(1) - 2], Faction.BLUE);
+        MakeHq(m_battleField[0, m_battleField.GetLength(1) - 2], Faction.BLUE);
 
         //LeftTop
-        FactionGREEN= AddFaction(m_battleField[m_battleField.GetLength(0) - 1, 0], Color.green);
-        MakeHq(m_battleField[m_battleField.GetLength(0)-1, 0], FactionGREEN);
-        MakeHq(m_battleField[m_battleField.GetLength(0)-1, 1], FactionGREEN);
-        MakeHq(m_battleField[m_battleField.GetLength(0)-2, 1], FactionGREEN);
-        MakeHq(m_battleField[m_battleField.GetLength(0)-2, 0], FactionGREEN);
+        Faction.GREEN= AddFaction(m_battleField[m_battleField.GetLength(0) - 1, 0], Color.green);
+        MakeHq(m_battleField[m_battleField.GetLength(0)-1, 0], Faction.GREEN);
+        MakeHq(m_battleField[m_battleField.GetLength(0)-1, 1], Faction.GREEN);
+        MakeHq(m_battleField[m_battleField.GetLength(0)-2, 1], Faction.GREEN);
+        MakeHq(m_battleField[m_battleField.GetLength(0)-2, 0], Faction.GREEN);
 
         //RightTop
-        FactionYELLOW = AddFaction(m_battleField[m_battleField.GetLength(1) - 1, m_battleField.GetLength(1) - 1], Color.yellow);
-        MakeHq(m_battleField[m_battleField.GetLength(0) - 1, m_battleField.GetLength(1) - 1], FactionYELLOW);
-        MakeHq(m_battleField[m_battleField.GetLength(0) - 1, m_battleField.GetLength(1) - 2], FactionYELLOW);
-        MakeHq(m_battleField[m_battleField.GetLength(0) - 2, m_battleField.GetLength(1) - 1], FactionYELLOW);
-        MakeHq(m_battleField[m_battleField.GetLength(0) - 2, m_battleField.GetLength(1) - 2], FactionYELLOW);
+        Faction.YELLOW = AddFaction(m_battleField[m_battleField.GetLength(1) - 1, m_battleField.GetLength(1) - 1], Color.yellow);
+        MakeHq(m_battleField[m_battleField.GetLength(0) - 1, m_battleField.GetLength(1) - 1], Faction.YELLOW);
+        MakeHq(m_battleField[m_battleField.GetLength(0) - 1, m_battleField.GetLength(1) - 2], Faction.YELLOW);
+        MakeHq(m_battleField[m_battleField.GetLength(0) - 2, m_battleField.GetLength(1) - 1], Faction.YELLOW);
+        MakeHq(m_battleField[m_battleField.GetLength(0) - 2, m_battleField.GetLength(1) - 2], Faction.YELLOW);
 
     }
     public void MakeHq(Territory HQTerritory, Faction faction)
@@ -451,8 +303,42 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
         }
        
     }
-    //lié à un evenement
-    public void PopItem()
+    public void RePopSpecial()
+    {
+        bool FoundRightPlace = false;
+
+        while (!FoundRightPlace)
+        {
+            int x = Random.Range(0, m_nbrXTerritories - 1);
+            int y = Random.Range(0, m_nbrYTerritories - 1);
+            if (!m_battleField[y,x].GetComponent<Territory>().IsHQ)
+            {
+                if (!m_battleField[y,x].GetComponent<Territory>().IsCenter)
+                {
+                    if (m_battleField[y,x].GetComponent<Territory>().GetPlayerNumOnTerritory() == 0)
+                    {
+                        if (!m_battleField[y,x].GetComponent<Territory>().HasItem)
+                        {
+                            FoundRightPlace = true;
+                            m_battleField[y,x].TerritoryGameObject.AddComponent<Item>();
+                            int B = Random.Range(1, 7);//random range takes argument 1 inclusive argument 2 exclusive
+                            switch (B)
+                            {
+                                case 1: m_battleField[y,x].GetComponent<Item>().ChooseTypeOfItem(Item.e_itemType.COINCHEST); break;
+                                case 2: m_battleField[y,x].GetComponent<Item>().ChooseTypeOfItem(Item.e_itemType.PARCHEMENT); break;
+                                case 3: m_battleField[y,x].GetComponent<Item>().ChooseTypeOfItem(Item.e_itemType.GRENADES); break;
+                                case 4: m_battleField[y,x].GetComponent<Item>().ChooseTypeOfItem(Item.e_itemType.PEBBLE); break;
+                                case 5: m_battleField[y,x].GetComponent<Item>().ChooseTypeOfItem(Item.e_itemType.SHOVEL); break;
+                                case 6: m_battleField[y,x].GetComponent<Item>().ChooseTypeOfItem(Item.e_itemType.STRAIN); break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+        //lié à un evenement
+        public void PopItem()
     {
 
     }
@@ -467,13 +353,7 @@ public class TerritoryManager  : MonoBehaviour, IGameEngine
     private List<GameObject> m_AxeX = new List<GameObject>();
     private List<List<GameObject>> m_AxeY = new List<List<GameObject>>();
 
-    private Faction m_factionRed;
-    private Faction m_factionBlue;
-    private Faction m_factionGreen;
-    private Faction m_factionYellow;
-    private bool m_timerFinished=true;
-    private bool m_gameHasStarted;
-    private bool m_isInitialized;
+
     #endregion
 
 }

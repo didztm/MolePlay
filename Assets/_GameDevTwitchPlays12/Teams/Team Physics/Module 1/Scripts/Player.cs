@@ -4,45 +4,24 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    
+    public Faction Faction { get; set; }
+    public Territory CurrentTerritory { get; set; }
+    public bool HasGlasses { get; set; }
+    public string Name { get; set; }
+    public int Level { get; set; }
+    public int Gold { get; set; }
+    public int NumPlayer { get; set; }
+    public Dictionary<Item, int> Inventory { get; set; }
 
-    public Faction m_playerFaction;
-    public Faction PlayerFaction
+    public Player (string name, int num)
     {
-        get { return m_playerFaction; }
-        set { m_playerFaction = value; }
-    }
-    public Territory m_currentTerritory;
-    public Territory CurrentTerritory
-    {
-        get { return m_currentTerritory; }
-        set { m_currentTerritory = value; }
-    }
-    //voir inventaire
-    public bool hasGlasses = false;
-    private string m_name;
-
-    public string Name
-    {
-        get { return m_name; }
-        set { m_name = value; }
+        HasGlasses = false;
+        Name = name;
+        Level = 1;
+        Gold = 0;
+        NumPlayer = num;
+        Inventory = new Dictionary<Item, int>();
     }
 
-    private int m_level = 1;
-    public int Level
-    {
-        get { return m_level; }
-        set { m_level = value; }
-    }
-    private int m_gold;
-    public int Gold
-    {
-        get { return m_gold; }
-        set { m_gold = value; }
-    }
-    private int m_numPlayer;
-    public int NumPlayer
-    {
-        get { return m_numPlayer; }
-        set { m_numPlayer = value; }
-    }
 }
